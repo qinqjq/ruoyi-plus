@@ -1,0 +1,30 @@
+package ${packageName}.controller;
+
+import com.gxf.common.core.controller.BaseController;
+import ${packageName}.domain.${ClassName};
+import lombok.RequiredArgsConstructor;
+import javax.validation.constraints.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import ${packageName}.service.I${ClassName}Service;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+/**
+ * ${functionName}Controller
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Api(value = "${functionName}控制器", tags = {"${functionName}管理"})
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RestController
+@RequestMapping("/${moduleName}/${businessName}")
+public class ${ClassName}Controller extends BaseController {
+
+    private final I${ClassName}Service ${ClassName}Service;
+
+
+}

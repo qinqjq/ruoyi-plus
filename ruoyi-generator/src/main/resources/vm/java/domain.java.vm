@@ -1,0 +1,80 @@
+package ${packageName}.domain;
+
+import com.gxf.common.annotation.Excel;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+import java.time.LocalDateTime;
+
+/**
+ * ${functionName}对象 ${tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+@NoArgsConstructor
+@Accessors(chain = true)
+@TableName("${tableName}")
+@ApiModel("${functionName}视图对象")
+public class ${ClassName} implements Serializable {
+
+    private static final long serialVersionUID=1L;
+
+    /** $pkColumn.columnComment */
+    @ApiModelProperty("$pkColumn.columnComment")
+    @TableId(value = "$pkColumn.columnName")
+    private ${pkColumn.javaType} ${pkColumn.javaField};
+#foreach ($column in $columns)
+#if($column.isPk!=1)
+
+    /** $column.columnComment */
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+#if($parentheseIndex != -1)
+    @Excel(name = "${comment}" , readConverterExp = "$column.readConverterExp()")
+#elseif($column.javaType == 'Date')
+    @Excel(name = "${comment}" , width = 30, dateFormat = "yyyy-MM-dd")
+#elseif($column.javaType == 'LocalDateTime')
+    @Excel(name = "${comment}" , width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+#else
+    @Excel(name = "${comment}")
+#end
+    @ApiModelProperty("$column.columnComment")
+#set($TableField="")
+#if($column.keyword)
+#set($TableField="value=""`$column.columnName`""")
+#end
+#if($column.javaField=="createBy"||$column.javaField=="ctime")
+#if($TableField != '')#set($TableField=$TableField+", ")#end
+#set($TableField=$TableField + "fill = FieldFill.INSERT")
+#end
+#if($column.javaField=="updateBy"||$column.javaField=="utime")
+#if($TableField != '')#set($TableField=$TableField+", ")#end
+#set($TableField=$TableField + "fill = FieldFill.INSERT_UPDATE")
+#end
+#if($TableField != '')
+    @TableField($TableField)
+#end
+#if($column.javaField=='delFlag')
+    @TableLogic
+#end
+#if($column.javaField=='version')
+    @Version
+#end
+    private $column.javaType $column.javaField;
+#end
+#end
+
+}

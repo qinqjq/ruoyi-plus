@@ -1,0 +1,47 @@
+package ${packageName}.bo;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.LocalDate;
+import lombok.EqualsAndHashCode;
+
+import java.util.Date;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+/**
+ * ${functionName}分页查询对象 ${tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+#if($table.crud || $table.sub)
+#set($Entity="BaseEntity")
+#elseif($table.tree)
+#set($Entity="TreeEntity")
+#end
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+@ApiModel("${functionName}分页查询对象")
+public class ${ClassName}QueryBo extends PageQueryBo {
+
+
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.javaField) && $column.query)
+	/** $column.columnComment */
+	@ApiModelProperty("$column.columnComment")
+	private $column.javaType $column.javaField;
+#end
+#end
+
+}

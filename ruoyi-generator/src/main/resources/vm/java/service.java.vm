@@ -1,0 +1,13 @@
+package ${packageName}.service;
+
+import ${packageName}.domain.${ClassName};
+import com.gxf.common.core.mybatisplus.core.IServicePlus;
+/**
+ * ${functionName}Service接口
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface I${ClassName}Service extends IServicePlus<${ClassName}> {
+
+}
